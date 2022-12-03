@@ -115,7 +115,7 @@ export class TimetableService {
 
   async getTimetable(school_code: string, week: number) {
     const host = await this.getHost();
-    if (!host) return { error: 'host not found' };
+    if (!host) throw new Error('Host not found');
     const script = await this.getScript(`${host.host}:${host.port}`);
     const callConst = this.getFirstScDataArguments(
       await this.findScDataCall(script),
@@ -130,5 +130,9 @@ export class TimetableService {
       school_code,
       week,
     );
+  }
+
+  resolveJsonText(str: string) {
+    return JSON.parse(str.slice(0, str.lastIndexOf('}') + 1));
   }
 }

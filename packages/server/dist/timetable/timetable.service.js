@@ -146,12 +146,15 @@ let TimetableService = class TimetableService {
         return __awaiter(this, void 0, void 0, function* () {
             const host = yield this.getHost();
             if (!host)
-                return { error: 'host not found' };
+                throw new Error('Host not found');
             const script = yield this.getScript(`${host.host}:${host.port}`);
             const callConst = this.getFirstScDataArguments(yield this.findScDataCall(script));
             const baseConst = yield this.getScDataBaseConst(yield this.findScDataDeclaration(script));
             return yield this.requestScData(`${host.host}:${host.port}`, baseConst, callConst, school_code, week);
         });
+    }
+    resolveJsonText(str) {
+        return JSON.parse(str.slice(0, str.lastIndexOf('}') + 1));
     }
 };
 TimetableService = __decorate([

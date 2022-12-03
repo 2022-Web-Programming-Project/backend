@@ -11,7 +11,10 @@ const common_1 = require("@nestjs/common");
 let SessionAuthGuard = class SessionAuthGuard {
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        return !!request.session.userId;
+        if (!request.session.user) {
+            throw new common_1.HttpException('로그인이 필요합니다.', common_1.HttpStatus.UNAUTHORIZED);
+        }
+        return true;
     }
 };
 SessionAuthGuard = __decorate([

@@ -7,6 +7,8 @@
     <title>Timetable</title>
 </head>
 <body>
-    
+    <% for (let day of timetable) { %>
+        <p><%= day.map(x => `${x[0]} (${x[1]})`).join(' ') %></p>
+    <% } %>
 </body>
 </html>
