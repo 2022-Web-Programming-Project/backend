@@ -12,22 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionRedirectFilter = void 0;
 const common_1 = require("@nestjs/common");
 let HttpExceptionRedirectFilter = class HttpExceptionRedirectFilter {
-    constructor(redirectUrl, filteringStatus) {
-        this.redirectUrl = redirectUrl;
-        this.filteringStatus = filteringStatus;
+    constructor(redirectMap) {
+        this.redirectMap = redirectMap;
     }
     catch(exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const status = exception.getStatus();
-        if (this.filteringStatus && !this.filteringStatus.includes(status)) {
+        if (!this.redirectMap[status]) {
             return;
         }
-        response.redirect(this.redirectUrl);
+        response.redirect(this.redirectMap[status]);
     }
 };
 HttpExceptionRedirectFilter = __decorate([
     (0, common_1.Catch)(common_1.HttpException),
-    __metadata("design:paramtypes", [String, Object])
+    __metadata("design:paramtypes", [Object])
 ], HttpExceptionRedirectFilter);
 exports.HttpExceptionRedirectFilter = HttpExceptionRedirectFilter;

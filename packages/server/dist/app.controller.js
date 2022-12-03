@@ -14,18 +14,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const http_exception_filter_1 = require("./filters/http-exception.filter");
+const watch_guard_1 = require("./guards/watch.guard");
 let AppController = class AppController {
-    root(session) {
-        console.log(session);
-        return { message: 'Hello world!', user: session.user };
+    root(session, watch, req, res) {
+        const isWatchPage = watch !== undefined;
+        res.render('index', { user: session.user, isWatch: isWatchPage });
     }
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.Render)('index'),
+    (0, common_1.UseGuards)(watch_guard_1.WatchGuard),
+    (0, common_1.UseFilters)(new http_exception_filter_1.HttpExceptionRedirectFilter({
+        128: '/',
+        129: '/?watch',
+    })),
     __param(0, (0, common_1.Session)()),
+    __param(1, (0, common_1.Query)('watch')),
+    __param(2, (0, common_1.Req)()),
+    __param(3, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Boolean, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "root", null);
 AppController = __decorate([

@@ -13,6 +13,8 @@ const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const database_module_1 = require("./database.module");
 const app_controller_1 = require("./app.controller");
+const timetable_module_1 = require("./timetable/timetable.module");
+const lunch_module_1 = require("./lunch/lunch.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -25,6 +27,8 @@ AppModule = __decorate([
             database_module_1.DatabaseModule,
             user_module_1.UserModule,
             auth_module_1.AuthModule,
+            timetable_module_1.TimetableModule,
+            lunch_module_1.LunchModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [],

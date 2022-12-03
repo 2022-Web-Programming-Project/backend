@@ -8,10 +8,7 @@ import { Response } from 'express';
 
 @Catch(HttpException)
 export class HttpExceptionRedirectFilter implements ExceptionFilter {
-  constructor(
-    private readonly redirectUrl: string,
-    private readonly filteringStatus: number[] | undefined,
-  ) {}
+  constructor(private readonly redirectMap: Record<number, string>) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -19,10 +16,10 @@ export class HttpExceptionRedirectFilter implements ExceptionFilter {
 
     const status = exception.getStatus();
 
-    if (this.filteringStatus && !this.filteringStatus.includes(status)) {
+    if (!this.redirectMap[status]) {
       return;
     }
 
-    response.redirect(this.redirectUrl);
+    response.redirect(this.redirectMap[status]);
   }
 }
