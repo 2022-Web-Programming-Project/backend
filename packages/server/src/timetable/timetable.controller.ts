@@ -1,29 +1,39 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Render,
+  Req,
+  Res,
+  Session,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
+import { Response } from 'express';
+import { HttpExceptionRedirectFilter } from 'src/filters/http-exception.filter';
+import { WatchGuard } from 'src/guards/watch.guard';
 import { TimetableService } from './timetable.service';
 
 @Controller('timetable')
 export class TimetableController {
   constructor(private readonly service: TimetableService) {}
 
-  @Get('/')
+  @Get('/api')
   async getTimetable() {
-    const host = await this.service.getHost();
-    if (!host) return { error: 'host not found' };
-    const script = await this.service.getScript(`${host.host}:${host.port}`);
-    const callConst = this.service.getFirstScDataArguments(
-      await this.service.findScDataCall(script),
-    );
-    const baseConst = await this.service.getScDataBaseConst(
-      await this.service.findScDataDeclaration(script),
-    );
-    const school_code = '41896';
-    const week = 1;
-    return await this.service.requestScData(
-      `${host.host}:${host.port}`,
-      baseConst,
-      callConst,
-      school_code,
-      week,
-    );
+    return await this.service.getTimetable('41896', 1);
+  }
+
+  @Get()
+  @Render('timetable/index')
+  @UseGuards(WatchGuard)
+  @UseFilters(
+    new HttpExceptionRedirectFilter({
+      128: '?',
+      129: '?watch',
+    }),
+  )
+  root(@Session() session: Record<string, any>, @Query('watch') watch: any) {
+    const isWatchPage = watch !== undefined;
+    return { user: session.user, isWatch: isWatchPage };
   }
 }

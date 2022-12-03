@@ -44,12 +44,10 @@ export class WatchGuard implements CanActivate {
       if (isWatchPage) {
         return true;
       } else {
-        console.log('Redirecting to watch page');
         throw new HttpException('Not a watch page', 129);
       }
     }
     if (isWatchPage) {
-      console.log('Redirecting to non-watch page');
       throw new HttpException('Not a watch device', 128);
     }
     return true;

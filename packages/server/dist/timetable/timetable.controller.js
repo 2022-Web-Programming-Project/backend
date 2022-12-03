@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -20,6 +23,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimetableController = void 0;
 const common_1 = require("@nestjs/common");
+const http_exception_filter_1 = require("../filters/http-exception.filter");
+const watch_guard_1 = require("../guards/watch.guard");
 const timetable_service_1 = require("./timetable.service");
 let TimetableController = class TimetableController {
     constructor(service) {
@@ -27,24 +32,34 @@ let TimetableController = class TimetableController {
     }
     getTimetable() {
         return __awaiter(this, void 0, void 0, function* () {
-            const host = yield this.service.getHost();
-            if (!host)
-                return { error: 'host not found' };
-            const script = yield this.service.getScript(`${host.host}:${host.port}`);
-            const callConst = this.service.getFirstScDataArguments(yield this.service.findScDataCall(script));
-            const baseConst = yield this.service.getScDataBaseConst(yield this.service.findScDataDeclaration(script));
-            const school_code = '41896';
-            const week = 1;
-            return yield this.service.requestScData(`${host.host}:${host.port}`, baseConst, callConst, school_code, week);
+            return yield this.service.getTimetable('41896', 1);
         });
+    }
+    root(session, watch) {
+        const isWatchPage = watch !== undefined;
+        return { user: session.user, isWatch: isWatchPage };
     }
 };
 __decorate([
-    (0, common_1.Get)('/'),
+    (0, common_1.Get)('/api'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], TimetableController.prototype, "getTimetable", null);
+__decorate([
+    (0, common_1.Get)(),
+    (0, common_1.Render)('timetable/index'),
+    (0, common_1.UseGuards)(watch_guard_1.WatchGuard),
+    (0, common_1.UseFilters)(new http_exception_filter_1.HttpExceptionRedirectFilter({
+        128: '?',
+        129: '?watch',
+    })),
+    __param(0, (0, common_1.Session)()),
+    __param(1, (0, common_1.Query)('watch')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], TimetableController.prototype, "root", null);
 TimetableController = __decorate([
     (0, common_1.Controller)('timetable'),
     __metadata("design:paramtypes", [timetable_service_1.TimetableService])

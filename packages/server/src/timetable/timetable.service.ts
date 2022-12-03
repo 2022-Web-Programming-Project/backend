@@ -112,4 +112,23 @@ export class TimetableService {
     });
     return res.data;
   }
+
+  async getTimetable(school_code: string, week: number) {
+    const host = await this.getHost();
+    if (!host) return { error: 'host not found' };
+    const script = await this.getScript(`${host.host}:${host.port}`);
+    const callConst = this.getFirstScDataArguments(
+      await this.findScDataCall(script),
+    );
+    const baseConst = await this.getScDataBaseConst(
+      await this.findScDataDeclaration(script),
+    );
+    return await this.requestScData(
+      `${host.host}:${host.port}`,
+      baseConst,
+      callConst,
+      school_code,
+      week,
+    );
+  }
 }

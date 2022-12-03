@@ -142,6 +142,17 @@ let TimetableService = class TimetableService {
             return res.data;
         });
     }
+    getTimetable(school_code, week) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const host = yield this.getHost();
+            if (!host)
+                return { error: 'host not found' };
+            const script = yield this.getScript(`${host.host}:${host.port}`);
+            const callConst = this.getFirstScDataArguments(yield this.findScDataCall(script));
+            const baseConst = yield this.getScDataBaseConst(yield this.findScDataDeclaration(script));
+            return yield this.requestScData(`${host.host}:${host.port}`, baseConst, callConst, school_code, week);
+        });
+    }
 };
 TimetableService = __decorate([
     (0, common_1.Injectable)()
