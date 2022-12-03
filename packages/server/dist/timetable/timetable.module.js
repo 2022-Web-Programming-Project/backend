@@ -15,7 +15,7 @@ let TimetableModule = class TimetableModule {
 TimetableModule = __decorate([
     (0, common_1.Module)({
         controllers: [timetable_controller_1.TimetableController],
-        providers: [timetable_service_1.TimetableService]
+        providers: [timetable_service_1.TimetableService],
     })
 ], TimetableModule);
 exports.TimetableModule = TimetableModule;

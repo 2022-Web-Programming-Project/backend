@@ -4,6 +4,6 @@ import { TimetableService } from './timetable.service';
 
 @Module({
   controllers: [TimetableController],
-  providers: [TimetableService]
+  providers: [TimetableService],
 })
 export class TimetableModule {}
