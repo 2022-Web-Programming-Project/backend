@@ -1,1 +1,84 @@
-/* Todo */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
+
+:root[color-theme='light'] {
+    --background: #fff;
+    --bottom: #ccc;
+    --bg2: #e2e2e2;
+    --text: #37352f;
+}
+
+:root[color-theme='dark'] {
+    --background: #000;
+    --bottom: #333;
+    --bg2: #1d1d1d;
+    --text: #c8cad0;
+}
+
+body {
+    font-family: "Pretendard Variable";
+    margin: 0;
+    /* padding: 1px; */
+    margin-top: 0;
+    color: var(--text);
+}
+
+#wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+a,
+a.visited {
+    color: inherit;
+    text-decoration: underline;
+}
+
+p,
+h1 {
+    color: var(--text);
+}
+
+.back {
+    background: var(--bg2);
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.center {
+    width: 40vw;
+    height: 20vh;
+    max-width: 100%;
+    max-height: 100%;
+    background-color: var(--background);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    padding: 1em 2em;
+    border-bottom: 2px solid var(--bottom);
+    display: table;
+}
+
+.form {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.index {
+    margin: 2em auto;
+    max-width: 50vw;
+    padding: 1em 2em;
+    overflow: auto;
+    border-bottom: 2px solid var(--bottom);
+    background-color: var(--background);
+}
+
+button {
+    cursor: pointer;
+}

@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timetable</title>
+    <% if (isWatch) { %>
+        <link href="/styles/watch.css" rel="stylesheet" type="text/css">
+    <% } %>
+    <% if (!isWatch) { %>
+        <link href="/styles/index.css" rel="stylesheet" type="text/css">
+    <% } %>
+    <script src="/scripts/theme.js"></script>
+     <title>Timetable</title>
 </head>
 <body>
-    <% for (let day of timetable) { %>
-        <p><%= day.map(x => `${x[0]} (${x[1]})`).join(' ') %></p>
-    <% } %>
+    <div id="wrapper">
+        <div class="back">
+            <div class="index">
+                <% for (let day of timetable) { %>
+                    <p>
+                        <%= day.map(x=> `${x[0]} (${x[1]})`).join(' ') %>
+                    </p>
+                <% } %>
+                <br>
+                <br>
+                <button id="togTheme">Toggle dark mode</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
