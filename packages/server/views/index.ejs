@@ -16,10 +16,13 @@
             <a href="/auth/regist">regist</a>
         <% } else { %>
             <h1><%= user?.username %>님 반갑습니다.</h1>
+            <a href="/auth/logout">logout</a>
         <% } %>
         <% if (isWatch) { %>
             <p>워치를 사용중이시군요!</p>
         <% } %>
+        <a href="/lunch">오늘의 점심</a>
+        <a href="/timetable">시간표</a>
     </div>
 </body>
 </html>

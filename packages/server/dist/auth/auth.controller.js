@@ -46,6 +46,12 @@ let AuthController = class AuthController {
         const isWatchPage = watch !== undefined;
         return { isWatch: isWatchPage };
     }
+    logout(session, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            session.user = null;
+            res.redirect('/');
+        });
+    }
     login(loginDto, session, watch, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = loginDto;
@@ -97,6 +103,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "loginRender", null);
+__decorate([
+    (0, common_1.Get)('logout'),
+    __param(0, (0, common_1.Session)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.Post)('/login')
     // eslint-disable-next-line @typescript-eslint/no-empty-function

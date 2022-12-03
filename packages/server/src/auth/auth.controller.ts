@@ -55,6 +55,13 @@ export class AuthController {
     return { isWatch: isWatchPage };
   }
 
+  @Get('logout')
+  async logout(@Session() session: Record<string, any>, @Res() res: Response) {
+    session.user = null;
+
+    res.redirect('/');
+  }
+
   @Post('/login')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async login(
