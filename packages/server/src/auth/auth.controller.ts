@@ -5,9 +5,11 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Query,
   Render,
   Res,
   Session,
+  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -18,6 +20,8 @@ import { SessionAuthGuard } from './guards/auth.guard';
 import { RegistUserDto } from './dto/regist-user.dtio';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Response } from 'express';
+import { HttpExceptionRedirectFilter } from 'src/filters/http-exception.filter';
+import { WatchGuard } from 'src/guards/watch.guard';
 
 const { REFRESH_TOKEN_KEY, REFRESH_TOKEN_OPTION } = Cookie;
 
@@ -37,14 +41,26 @@ export class AuthController {
 
   @Get('login')
   @Render('auth/login')
+  @UseGuards(WatchGuard)
+  @UseFilters(
+    new HttpExceptionRedirectFilter({
+      128: '?',
+      129: '?watch',
+    }),
+  )
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  loginRender() {}
+  loginRender(@Query('watch') watch: any) {
+    const isWatchPage = watch !== undefined;
+
+    return { isWatch: isWatchPage };
+  }
 
   @Post('/login')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async login(
     @Body() loginDto: LoginUserDto,
     @Session() session: Record<string, any>,
+    @Query('watch') watch: any,
     @Res() res: Response,
   ) {
     const { email, password } = loginDto;
@@ -62,8 +78,19 @@ export class AuthController {
 
   @Get('regist')
   @Render('auth/regist')
+  @UseGuards(WatchGuard)
+  @UseFilters(
+    new HttpExceptionRedirectFilter({
+      128: '?',
+      129: '?watch',
+    }),
+  )
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  registRender() {}
+  registRender(@Query('watch') watch: any) {
+    const isWatchPage = watch !== undefined;
+
+    return { isWatch: isWatchPage };
+  }
 
   @Post('regist')
   async regist(
@@ -84,6 +111,6 @@ export class AuthController {
 
     session.userId = user.id;
 
-    res.render('index', { user });
+    res.redirect('/');
   }
 }

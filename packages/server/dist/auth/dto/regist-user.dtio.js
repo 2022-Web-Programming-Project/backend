@@ -25,4 +25,12 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegistUserDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], RegistUserDto.prototype, "grade", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], RegistUserDto.prototype, "class", void 0);
 exports.RegistUserDto = RegistUserDto;

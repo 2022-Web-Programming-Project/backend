@@ -30,6 +30,8 @@ const auth_service_1 = require("./auth.service");
 const auth_guard_1 = require("./guards/auth.guard");
 const regist_user_dtio_1 = require("./dto/regist-user.dtio");
 const login_user_dto_1 = require("./dto/login-user.dto");
+const http_exception_filter_1 = require("../filters/http-exception.filter");
+const watch_guard_1 = require("../guards/watch.guard");
 const { REFRESH_TOKEN_KEY, REFRESH_TOKEN_OPTION } = reference_1.Cookie;
 let AuthController = class AuthController {
     constructor(config, authService) {
@@ -40,8 +42,11 @@ let AuthController = class AuthController {
         return 'Hello World!';
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    loginRender() { }
-    login(loginDto, session, res) {
+    loginRender(watch) {
+        const isWatchPage = watch !== undefined;
+        return { isWatch: isWatchPage };
+    }
+    login(loginDto, session, watch, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = loginDto;
             const user = yield this.authService.loginUser(loginDto);
@@ -53,7 +58,10 @@ let AuthController = class AuthController {
         });
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    registRender() { }
+    registRender(watch) {
+        const isWatchPage = watch !== undefined;
+        return { isWatch: isWatchPage };
+    }
     regist(registDto, session, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, username, password } = registDto;
@@ -62,7 +70,7 @@ let AuthController = class AuthController {
             }
             const user = yield this.authService.registUser(registDto);
             session.userId = user.id;
-            res.render('index', { user });
+            res.redirect('/');
         });
     }
 };
@@ -76,11 +84,17 @@ __decorate([
 ], AuthController.prototype, "hello", null);
 __decorate([
     (0, common_1.Get)('login'),
-    (0, common_1.Render)('auth/login')
+    (0, common_1.Render)('auth/login'),
+    (0, common_1.UseGuards)(watch_guard_1.WatchGuard),
+    (0, common_1.UseFilters)(new http_exception_filter_1.HttpExceptionRedirectFilter({
+        128: '?',
+        129: '?watch',
+    }))
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ,
+    __param(0, (0, common_1.Query)('watch')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "loginRender", null);
 __decorate([
@@ -89,18 +103,25 @@ __decorate([
     ,
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Session)()),
-    __param(2, (0, common_1.Res)()),
+    __param(2, (0, common_1.Query)('watch')),
+    __param(3, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto, Object, Object]),
+    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto, Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Get)('regist'),
-    (0, common_1.Render)('auth/regist')
+    (0, common_1.Render)('auth/regist'),
+    (0, common_1.UseGuards)(watch_guard_1.WatchGuard),
+    (0, common_1.UseFilters)(new http_exception_filter_1.HttpExceptionRedirectFilter({
+        128: '?',
+        129: '?watch',
+    }))
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     ,
+    __param(0, (0, common_1.Query)('watch')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "registRender", null);
 __decorate([

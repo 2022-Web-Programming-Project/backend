@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from '@nestjs/class-validator';
+import { IsEmail, IsNumber, IsString } from '@nestjs/class-validator';
 
 export class RegistUserDto {
   @IsEmail()
@@ -9,4 +9,10 @@ export class RegistUserDto {
 
   @IsString()
   password!: string;
+
+  @IsNumber()
+  grade!: number;
+
+  @IsNumber()
+  class!: number;
 }

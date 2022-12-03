@@ -21,6 +21,12 @@ export class User {
   @Column('varchar', { length: 64 })
   password!: string;
 
+  @Column('int')
+  grade!: number;
+
+  @Column('int')
+  class!: number;
+
   @CreateDateColumn()
   createdAt!: Date;
 
