@@ -1,0 +1,21 @@
+version: '3.0'
+
+services:
+  db:
+    image: postgres:15
+    networks:
+      - backend
+    env_file:
+      - database/.env
+    volumes:
+      - ./database/init/:/docker-entrypoint-initdb.d/
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  db-data:
